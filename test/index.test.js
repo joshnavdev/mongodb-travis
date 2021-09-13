@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../src/app');
 
-beforeAll(async () => {
+beforeAll(() => {
   const mongoURI = process.env.MONGO_URI;
 
   const mongoOptions = {
@@ -11,7 +11,7 @@ beforeAll(async () => {
     useUnifiedTopology: true,
   };
 
-  await mongoose.connect(mongoURI, mongoOptions);
+  return mongoose.connect(mongoURI, mongoOptions).then(() => console.log('connected'));
 });
 
 afterAll(async () => {
