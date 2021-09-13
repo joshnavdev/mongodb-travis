@@ -1,0 +1,17 @@
+sudo: required
+
+env:
+  global:
+    - MONGO_URI=mongodb://joshua:carlospunk@127.0.0.1:27017/lexia_test
+
+services:
+  - docker
+  - mongodb
+
+before_install:
+  - sleep 15
+  - mongo lexia_test --eval 'db.createUser({user:"joshua",pwd:"carlospunk",roles:["readWrite"]});'
+  - docker build -t joshnavru/mongo-test .
+
+script:
+    - docker run --network host -e CI=true -e MONGO_URI joshnavru/mongo-test npm run test
